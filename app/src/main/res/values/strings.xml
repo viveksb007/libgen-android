@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LibgenIO</string>
+    <string name="author_name">Author Name</string>
+    <string name="book_title">Book Title</string>
+    <string name="file_extension">File Extension</string>
+    <string name="file_size">File Size</string>
+    <string name="download_icon">Download Icon</string>
+    <string name="pages">Pages</string>
+    <string name="language">Language</string>
+    <string name="year">Year</string>
+    <string name="share_link">Share Link</string>
+</resources>
