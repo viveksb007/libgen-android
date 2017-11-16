@@ -9,4 +9,7 @@
     <string name="language">Language</string>
     <string name="year">Year</string>
     <string name="share_link">Share Link</string>
+    <string name="download">Download</string>
+    <string name="share">Share</string>
+    <string name="overflow_button">Overflow Button</string>
 </resources>

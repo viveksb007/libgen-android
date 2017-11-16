@@ -22,10 +22,11 @@
         android:minHeight="50dp"
         android:minWidth="50dp" />
 
-    <ListView
-        android:id="@+id/book_list_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/book_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp" />
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
 
 </LinearLayout>

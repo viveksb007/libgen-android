@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/card_margin"
+        card_view:cardCornerRadius="@dimen/card_album_radius">
+
+        <RelativeLayout
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/overflow_button"
+                android:text="@string/book_title"
+                android:textSize="@dimen/title_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_title"
+                android:text="@string/author_name"
+                android:textSize="@dimen/author_size" />
+
+            <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_author"
+                android:layout_centerHorizontal="true"
+                android:text="Year" />
+
+            <TextView
+                android:id="@+id/tv_file_extension"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_author"
+                android:text="@string/file_extension" />
+
+            <TextView
+                android:id="@+id/tv_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_file_extension"
+                android:layout_alignBottom="@+id/tv_file_extension"
+                android:layout_alignStart="@+id/tv_year"
+                android:text="@string/file_size" />
+
+            <TextView
+                android:id="@+id/tv_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tv_file_extension"
+                android:text="@string/language" />
+
+            <TextView
+                android:id="@+id/tv_pages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_language"
+                android:layout_alignStart="@+id/tv_file_size"
+                android:text="@string/pages" />
+
+            <ImageButton
+                android:id="@+id/overflow_button"
+                style="?android:attr/actionOverflowButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="@string/overflow_button" />
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

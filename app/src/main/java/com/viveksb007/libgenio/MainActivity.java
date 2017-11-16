@@ -4,6 +4,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private String BASE_URL = "http://libgen.io/search.php?req=";
-    private String QUERY = "Elon Musk";
     private String BASE_DOWNLOAD_URL = "http://download.libgen.io/get/";
-    private ArrayList<Book> bookList;
-    private ListView bookListView;
+    private ArrayList<Book> bookList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private BooksAdapter booksAdapter;
     boolean doubleBackToExitPressedOnce = false;
     private ProgressBar progressBar;
     private SearchView searchView;
@@ -40,7 +44,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bookListView = findViewById(R.id.book_list_view);
+
+        recyclerView = findViewById(R.id.book_recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        booksAdapter = new BooksAdapter(this, bookList);
+        recyclerView.setAdapter(booksAdapter);
+
         progressBar = findViewById(R.id.progress_bar_cyclic);
         progressBar.setVisibility(View.GONE);
         searchView = findViewById(R.id.search_view);
@@ -66,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    bookList = new ArrayList<>();
+                    bookList.clear();
                     Document doc = Jsoup.connect(BASE_URL + query).get();
                     if (doc == null) return;
                     Elements elements = doc.getElementsByTag("tr");
@@ -81,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 author.append(authorElements.text());
                                 author.append(", ");
                             }
-                            author.setLength(author.length()-2);
+                            author.setLength(author.length() - 2);
                             book.setAuthor(author.toString());
                             book.setTitle((bookElements.get(2).children()).get(0).text());
                             book.setPublisher(bookElements.get(3).text());
@@ -107,17 +119,18 @@ public class MainActivity extends AppCompatActivity {
                             */
                         }
                     }
-                    if (bookList.size() == 0) {
-                        Toast.makeText(MainActivity.this, "Nothing Found.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (bookList.size() == 0)
+                                Toast.makeText(MainActivity.this, "Nothing Found.", Toast.LENGTH_SHORT).show();
+                            else {
                                 updateListView();
                                 progressBar.setVisibility(View.GONE);
                             }
-                        });
-                    }
+                        }
+                    });
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -126,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateListView() {
-        BooksAdapter booksAdapter = new BooksAdapter(MainActivity.this, bookList);
-        bookListView.setAdapter(booksAdapter);
+        booksAdapter.notifyDataSetChanged();
+        Log.v(TAG, bookList.size() + "");
     }
 
     @Override

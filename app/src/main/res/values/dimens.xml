@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_margin">2dp</dimen>
+    <dimen name="card_album_radius">0dp</dimen>
+    <dimen name="title_size">16sp</dimen>
+    <dimen name="author_size">15sp</dimen>
+</resources>
