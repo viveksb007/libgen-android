@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,17 +20,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private String BASE_URL = "http://libgen.io/search.php?req=";
-    private String BASE_DOWNLOAD_URL = "http://download.libgen.io/get/";
     private ArrayList<Book> bookList = new ArrayList<>();
     private RecyclerView recyclerView;
     private BooksAdapter booksAdapter;
