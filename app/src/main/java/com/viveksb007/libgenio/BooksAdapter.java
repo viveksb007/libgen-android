@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -18,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,20 +26,15 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-
-/**
- * Created by viveksb007 on 16/11/17.
- */
+import java.util.List;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder> {
 
     private static final String TAG = "BooksAdapter";
-    private String BASE_DOWNLOAD_URL = "http://libgen.io/get.php?md5=";
-    private ArrayList<Book> bookList;
+    private List<Book> bookList;
     private Context context;
 
-    public BooksAdapter(Context context, ArrayList<Book> bookList) {
+    public BooksAdapter(Context context, List<Book> bookList) {
         this.bookList = bookList;
         this.context = context;
     }

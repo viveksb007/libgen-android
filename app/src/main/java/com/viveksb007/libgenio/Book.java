@@ -2,10 +2,6 @@ package com.viveksb007.libgenio;
 
 import android.util.Log;
 
-/**
- * Created by viveksb007 on 12/11/17.
- */
-
 public class Book {
 
     private static final String TAG = "Book";

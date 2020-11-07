@@ -1,32 +1,32 @@
 package com.viveksb007.libgenio;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private String BASE_URL = "http://libgen.rs/search.php?req=";
-    private ArrayList<Book> bookList = new ArrayList<>();
+    private List<Book> bookList = new ArrayList<>();
     private RecyclerView recyclerView;
     private BooksAdapter booksAdapter;
     boolean doubleBackToExitPressedOnce = false;
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 searchView.clearFocus();
                 progressBar.setVisibility(View.VISIBLE);
                 findBooks(query);
+                progressBar.setVisibility(View.GONE);
                 return true;
             }
 
@@ -73,45 +74,8 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     bookList.clear();
                     Document doc = Jsoup.connect(BASE_URL + query).get();
-                    if (doc == null) return;
-                    Elements elements = doc.getElementsByTag("tr");
-                    for (Element element : elements) {
-                        if ("top".equals(element.attr("valign")) && ("#C6DEFF".equals(element.attr("bgcolor")) || "".equals(element.attr("bgcolor")))) {
-                            Elements bookElements = element.children();
-                            Book book = new Book();
-                            book.setID(bookElements.get(0).text());
-                            Elements authors = bookElements.get(1).children();
-                            StringBuilder author = new StringBuilder();
-                            for (Element authorElements : authors) {
-                                author.append(authorElements.text());
-                                author.append(", ");
-                            }
-                            author.setLength(author.length() - 2);
-                            book.setAuthor(author.toString());
-                            book.setTitle((bookElements.get(2).children()).get(0).text());
-                            book.setPublisher(bookElements.get(3).text());
-                            book.setYear(bookElements.get(4).text());
-                            book.setPages(bookElements.get(5).text());
-                            book.setLanguage(bookElements.get(6).text());
-                            book.setSize(bookElements.get(7).text());
-                            book.setExtension(bookElements.get(8).text());
-                            book.setDownloadLink((bookElements.get(9).children()).get(0).attr("href"));
-                            bookList.add(book);
-                            //book.logBook();
-                            /*
-                            Log.v(TAG, bookElements.get(0).text());
-                            Log.v(TAG, (bookElements.get(1).children()).get(0).text());
-                            Log.v(TAG, (bookElements.get(2).children()).get(0).text());
-                            Log.v(TAG, bookElements.get(3).text());
-                            Log.v(TAG, bookElements.get(4).text());
-                            Log.v(TAG, bookElements.get(5).text());
-                            Log.v(TAG, bookElements.get(6).text());
-                            Log.v(TAG, bookElements.get(7).text());
-                            Log.v(TAG, bookElements.get(8).text());
-                            Log.v(TAG, (bookElements.get(9).children()).get(0).attr("href"));
-                            */
-                        }
-                    }
+                    bookList.addAll(new BookExtractor().extractBooksFromDocument(doc));
+
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
@@ -119,11 +83,9 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Nothing Found.", Toast.LENGTH_SHORT).show();
                             else {
                                 updateListView();
-                                progressBar.setVisibility(View.GONE);
                             }
                         }
                     });
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
