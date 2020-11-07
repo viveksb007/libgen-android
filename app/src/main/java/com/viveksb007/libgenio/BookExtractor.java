@@ -1,6 +1,7 @@
 package com.viveksb007.libgenio;
 
 import com.viveksb007.libgenio.filter.BookElementFilter;
+import com.viveksb007.libgenio.model.Book;
 
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;

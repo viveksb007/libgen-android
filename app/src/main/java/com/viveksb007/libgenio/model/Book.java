@@ -1,4 +1,4 @@
-package com.viveksb007.libgenio;
+package com.viveksb007.libgenio.model;
 
 import android.util.Log;
 

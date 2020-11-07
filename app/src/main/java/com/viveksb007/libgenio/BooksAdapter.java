@@ -19,6 +19,8 @@ import android.widget.Toast;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.viveksb007.libgenio.model.Book;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -108,12 +110,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
                 Log.v(TAG, downloadLink);
                 Document doc = Jsoup.connect(downloadLink).get();
                 if (doc == null) {
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context, "Error in fetching data.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "Error in fetching data.", Toast.LENGTH_SHORT).show());
                     return;
                 }
                 Elements elements = doc.getElementsByTag("td");

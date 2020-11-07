@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.viveksb007.libgenio.MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="false"
-        app:queryHint="Enter Query" />
+    <data>
 
-    <ProgressBar
-        android:id="@+id/progress_bar_cyclic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:minWidth="50dp"
-        android:minHeight="50dp" />
+        <variable
+            name="searchField"
+            type="com.viveksb007.libgenio.model.SearchField" />
+    </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/book_recycler_view"
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:orientation="vertical"
+        tools:context="com.viveksb007.libgenio.MainActivity">
 
-</LinearLayout>
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            app:queryHint="Enter Query" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_cyclic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minWidth="50dp"
+            android:minHeight="50dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/book_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+
+</layout>

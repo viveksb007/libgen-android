@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.viveksb007.libgenio.model.Book;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
