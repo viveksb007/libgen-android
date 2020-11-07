@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private String BASE_URL = "http://libgen.io/search.php?req=";
+    private String BASE_URL = "http://libgen.rs/search.php?req=";
     private ArrayList<Book> bookList = new ArrayList<>();
     private RecyclerView recyclerView;
     private BooksAdapter booksAdapter;
