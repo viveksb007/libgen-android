@@ -55,12 +55,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
         holder.pages.setText("Pages : " + book.getPages());
         holder.language.setText("Language : " + book.getLanguage());
         holder.year.setText("Year : " + book.getYear());
-        holder.overflowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflowButton, position);
-            }
-        });
+        holder.overflowButton.setOnClickListener(view -> showPopupMenu(holder.overflowButton, position));
     }
 
     @Override
@@ -108,47 +103,44 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.MyViewHolder
     private void downloadBook(int position) {
         final String downloadLink = bookList.get(position).getDownloadLink();
         final String fileName = bookList.get(position).getTitle() + '.' + bookList.get(position).getExtension();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Log.v(TAG, downloadLink);
-                    Document doc = Jsoup.connect(downloadLink).get();
-                    if (doc == null) {
-                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(context, "Error in fetching data.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        return;
-                    }
-                    Elements elements = doc.getElementsByTag("td");
-                    String finalDownloadLink = "";
-                    for (Element element : elements) {
-                        if ("center".equals(element.attr("align")) && "top".equals(element.attr("valign"))) {
-                            finalDownloadLink = (element.children()).get(0).attr("href");
-                            break;
+        new Thread(() -> {
+            try {
+                Log.v(TAG, downloadLink);
+                Document doc = Jsoup.connect(downloadLink).get();
+                if (doc == null) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Error in fetching data.", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    if ("".equals(finalDownloadLink)) {
-                        Log.v(TAG, "Link not found");
-                    } else {
-                        Log.v(TAG, finalDownloadLink);
-                        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                        DownloadManager.Request downloadRequest = new DownloadManager.Request(Uri.parse(finalDownloadLink));
-                        File destinationFile = new File(Environment.getExternalStorageDirectory(), fileName);
-                        downloadRequest.setDescription("Downloading Book");
-                        downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                        downloadRequest.setDestinationUri(Uri.fromFile(destinationFile));
-                        assert downloadManager != null;
-                        downloadManager.enqueue(downloadRequest);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    });
+                    return;
                 }
-
+                Elements elements = doc.getElementsByTag("td");
+                String finalDownloadLink = "";
+                for (Element element : elements) {
+                    if ("center".equals(element.attr("align")) && "top".equals(element.attr("valign"))) {
+                        finalDownloadLink = (element.children()).get(0).attr("href");
+                        break;
+                    }
+                }
+                if ("".equals(finalDownloadLink)) {
+                    Log.v(TAG, "Link not found");
+                } else {
+                    Log.v(TAG, finalDownloadLink);
+                    DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                    DownloadManager.Request downloadRequest = new DownloadManager.Request(Uri.parse(finalDownloadLink));
+                    File destinationFile = new File(Environment.getExternalStorageDirectory(), fileName);
+                    downloadRequest.setDescription("Downloading Book");
+                    downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                    downloadRequest.setDestinationUri(Uri.fromFile(destinationFile));
+                    assert downloadManager != null;
+                    downloadManager.enqueue(downloadRequest);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
         }).start();
     }
 

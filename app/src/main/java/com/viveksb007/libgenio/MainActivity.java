@@ -68,27 +68,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findBooks(final String query) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    bookList.clear();
-                    Document doc = Jsoup.connect(BASE_URL + query).get();
-                    bookList.addAll(new BookExtractor().extractBooksFromDocument(doc));
+        new Thread(() -> {
+            try {
+                bookList.clear();
+                Document doc = Jsoup.connect(BASE_URL + query).get();
+                bookList.addAll(new BookExtractor().extractBooksFromDocument(doc));
 
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (bookList.size() == 0)
-                                Toast.makeText(MainActivity.this, "Nothing Found.", Toast.LENGTH_SHORT).show();
-                            else {
-                                updateListView();
-                            }
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bookList.size() == 0)
+                            Toast.makeText(MainActivity.this, "Nothing Found.", Toast.LENGTH_SHORT).show();
+                        else {
+                            updateListView();
                         }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }
